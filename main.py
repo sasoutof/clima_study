@@ -1,4 +1,6 @@
 import csv
+import numpy as np
+import matplotlib as mpl
 
 #TMEDIA[5] TMAX[9] PRECIPITACION[6] TIEMPOSOL[15]
 years = []
