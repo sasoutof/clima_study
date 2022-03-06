@@ -26,5 +26,3 @@ class data:
 
     def set_temperature(self, temperature): self.temperature = temperature
 
-a=data('',5,8)
-print(a.get_stations_dictionary())
