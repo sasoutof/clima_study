@@ -4,8 +4,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 
-
-#TMEDIA[5] TMAX[9] PRECIPITACION[6] TIEMPOSOL[15]
 years = []
 temperatures = []
 date = []
