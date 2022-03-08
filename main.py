@@ -13,7 +13,6 @@ temperatura = 25
 column = 5
 
 with open("ESTUDIO_TEMPERATURAS/SANTIAGO_CENTRO.csv", newline='') as File:
-
     reader = csv.reader(File)
     for row in reader:
         if float(row[column]) >= temperatura:

@@ -7,4 +7,7 @@ for file in os.listdir(filepath):
         station_reference = file.split('-')
         new_name = station_reference[0] + '.csv'
         os.rename(os.path.join(filepath, file), os.path.join(filepath, new_name))
+        os.close()
+
+
 
