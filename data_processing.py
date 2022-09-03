@@ -140,3 +140,5 @@ limited_iroite = limits_data(debugged_iroite, '1995-01-01', 0)
 #         for row in limited_iroite:
 #             csv_writer.writerow(row)
 
+for i in range(20):
+    print('aja')
