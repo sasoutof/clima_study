@@ -1,0 +1,39 @@
+
+********
+UNIDADES
+********
+Columna1: Fecha en formato (aaaa-mm-dd) . Si lo abre con una hoja de cálculo, es posible que interprete el campo como fecha y lo vea en el formato habitual dd/mm/aaaa
+Columna2: Identificador de Estación Meteorológica (Valor de 4 ó 5 caracteres)
+Columna3: Nombre de la Estación
+Columna4: Provincia en la que se encuentra
+Columna5: Altitud (metros) sobre el nivel del mar
+Columna6: Temperatura media diaria (ºC)
+Columna7: Precipitación diaria de 07h a 07h (mm = l/m2) 
+Columna8: Temperatura minima del día(ºC)
+Columna9: Hora de Temperatura mínima (hh:mm UTC)
+Columna10: Temperatura Máxima (ºC)
+Columna11: Hora de Temperatura máxima (hh:mm UTC)
+Columna12: Dirección de la racha máxima (decenas de grado)
+Columna13: Velocidad media del viento (m/s)
+Columna14: Racha máxima de viento (m/s)
+Columna15: Hora y minuto Racha máxima de viento (hh:mm UTC) 
+Columna16: Horas de Sol (horas)
+Columna17: Presión máxima al nivel de referencia de la estación (hPa)
+Columna18: Hora de la presión máxima (redondeada a la hora entera más próxima) (hora)
+Columna19: Presión mínima al nivel de referencia de la estación (hPa)
+Columna20: Hora de la presión mínima (redondeada a la hora entera más próxima) (hora)
+
+*******************
+VALORES ESPECIALES:
+*******************
+
+->Hora de ocurrencia de un valor extremo:
+     Varias: El valor extremo se repite varias veces a lo largo del día, o el valor extremo
+             se ha mantenido estacionario durante más de una hora.
+
+->Precipitación: 
+     Ip: Precipitación inapreciable (inferior a 1 décima de mm)
+     Acum: Precipitación acumulada
+
+->Dirección del viento:
+      99: Dirección variable

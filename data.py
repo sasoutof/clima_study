@@ -1,9 +1,13 @@
 import csv
 import re
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import pandas as pd
 
 class data:
 
-    def __init__(self, station,data_type):
+    def __init__(self, station, data_type):
         self.station = station
         self.data_type = data_type
         self.stations_dictionary = {}
@@ -40,6 +44,33 @@ class data:
                 #print(re.findall("[^0123456789.]", str(row[0])))
                 if self.valor <= float(row[0]):
                     self.data_out.append(row[0])
+    def draw_data(self):
+        x_data_array = 0
+        y_data_array = 0
+        for row in self.data:
+            # x_data_array = np.append(x_data_array, float(row[1]))
+            y_data_array = np.append(y_data_array, float(row[0]))
+        y_data = pd.Series(y_data_array)
+        fig, axes = plt.subplots()
+        y_data.plot(ax=axes[0], kind='bar', title='bar')
+        plt.show()
+        # min = np.amin(y_data_array)
+        # max = np.amax(y_data_array)
+
+        # len = y_data_array.size
+
+        # y_axis = np.array(y_data_array)
+        # x_axis = np.linspace(1,len,len)
+        # print(len)
+        # print(y_axis.size)
+        # print(x_axis.size)
+        # print(x_axis[5800])
+        # fig, ax = plt.subplots()
+        # ax.stem(x_axis, y_axis)
+        # ax.set(xlim=(0, max), xticks=np.arange(1, max),
+        #         ylim=(0, len), yticks=np.arange(1, len))
+        # plt.show()
+
     @fill_stations_dictionary
     def get_stations_dictionary(self): return self.stations_dictionary
     def get_data(self):return self.data
@@ -57,7 +88,6 @@ t_max_1387E.obtain_data()
 t_max_1393.obtain_data()
 t_max_1400.obtain_data()
 
-
 t_max_1351.analyze_data(0,21)
 t_max_1387.analyze_data(0,21)
 t_max_1387E.analyze_data(0,21)
@@ -70,3 +100,4 @@ print(t_max_1387.get_data())
 print(t_max_1387E.get_data())
 print(t_max_1393.get_data())
 print(t_max_1400.get_data())
+t_max_1393.draw_data()
