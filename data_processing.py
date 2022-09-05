@@ -1,7 +1,8 @@
 def seek_data(file_reference, data_ref):
     import csv
     data_date_matrix = []
-    file_path = "DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
+    file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
+
     with open(file_path, encoding="utf8", errors='ignore') as File:
         reader = csv.reader(File)
         for row in reader:
@@ -48,43 +49,49 @@ def set_up_date(data):
     debugged_data = date
     return debugged_data
 
+# def correlation_analysis():
+
 import csv
-#----------------------------------------------A Coruña aeropuerto--------------------------------------------------
-coruña_aeropuerto = seek_data('1387E', 5)
-debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
-limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '2020-01-01', 0)
-#----------------------------------------------A Coruña--------------------------------------------------
-coruña = seek_data('1387', 5)
-debugged_coruña = set_up_date(coruña)
-limited_debugged_coruña = limits_data(debugged_coruña, '1995-01-01', 0)
-# ----------------------------------------------Cabo Vilan--------------------------------------------------
-cabo_vilan = seek_data('1393', 5)
-debugged_cabo_vilan = set_up_date(cabo_vilan)
-limited_cabo_vilan = limits_data(debugged_cabo_vilan, '1995-01-01', 0)
-# ----------------------------------------------Estaca de Vares--------------------------------------------------
-estaca_vares = seek_data('1351', 5)
-debugged_estaca_vares = set_up_date(estaca_vares)
-limited_estaca_vares = limits_data(debugged_estaca_vares, '1995-01-01', 0)
-# ----------------------------------------------Fisterra--------------------------------------------------
-fisterra = seek_data('1400', 5)
-debugged_fisterra = set_up_date(fisterra)
-limited_fisterra = limits_data(debugged_fisterra, '1995-01-01', 0)
-# ----------------------------------------------Santiago De Compostela--------------------------------------------------
-sdc = seek_data('1428', 5)
-debugged_sdc = set_up_date(sdc)
-limited_sdc = limits_data(debugged_sdc, '1995-01-01', 0)
-#----------------------------------------------Santiago De Compostela airport--------------------------------------------------
-sdc_airport = seek_data('1475X', 5)
-debugged_sdc_airport = set_up_date(sdc_airport)
-limited_sdc_airport = limits_data(debugged_sdc_airport, '1995-01-01', 0)
-#----------------------------------------------Padron--------------------------------------------------
-padron = seek_data('1473A', 5)
-debugged_padron = set_up_date(padron)
-limited_padron = limits_data(debugged_padron, '1995-01-01', 0)
-#----------------------------------------------Iroite--------------------------------------------------
-iroite = seek_data('1437O', 5)
-debugged_iroite = set_up_date(iroite)
-limited_iroite = limits_data(debugged_iroite, '1995-01-01', 0)
+# # #----------------------------------------------A Coruña aeropuerto--------------------------------------------------
+# coruña_aeropuerto = seek_data('1387E', 5)
+# debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
+# limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1995-01-01', 0)
+# #----------------------------------------------A Coruña--------------------------------------------------
+# coruña = seek_data('1387', 5)
+# debugged_coruña = set_up_date(coruña)
+# limited_debugged_coruña = limits_data(debugged_coruña, '1995-01-01', 0)
+# # ----------------------------------------------Cabo Vilan--------------------------------------------------
+# cabo_vilan = seek_data('1393', 5)
+# debugged_cabo_vilan = set_up_date(cabo_vilan)
+# limited_cabo_vilan = limits_data(debugged_cabo_vilan, '1995-01-01', 0)
+# # ----------------------------------------------Estaca de Vares--------------------------------------------------
+# estaca_vares = seek_data('1351', 5)
+# debugged_estaca_vares = set_up_date(estaca_vares)
+# limited_estaca_vares = limits_data(debugged_estaca_vares, '1995-01-01', 0)
+# # ----------------------------------------------Fisterra--------------------------------------------------
+# fisterra = seek_data('1400', 5)
+# debugged_fisterra = set_up_date(fisterra)
+# limited_fisterra = limits_data(debugged_fisterra, '1995-01-01', 0)
+# # ----------------------------------------------Santiago De Compostela--------------------------------------------------
+# sdc = seek_data('1428', 5)
+# debugged_sdc = set_up_date(sdc)
+# limited_sdc = limits_data(debugged_sdc, '1995-01-01', 0)
+# #----------------------------------------------Santiago De Compostela airport--------------------------------------------------
+# sdc_airport = seek_data('1475X', 5)
+# debugged_sdc_airport = set_up_date(sdc_airport)
+# limited_sdc_airport = limits_data(debugged_sdc_airport, '1995-01-01', 0)
+# #----------------------------------------------Padron--------------------------------------------------
+# padron = seek_data('1473A', 5)
+# debugged_padron = set_up_date(padron)
+# limited_padron = limits_data(debugged_padron, '1995-01-01', 0)
+# #----------------------------------------------Iroite--------------------------------------------------
+# iroite = seek_data('1437O', 5)
+# debugged_iroite = set_up_date(iroite)
+# limited_iroite = limits_data(debugged_iroite, '1995-01-01', 0)
+# #----------------------------------------------CHINCHILLA--------------------------------------------------
+palmas = seek_data('C229J', 5)
+debugged_palmas = set_up_date(palmas)
+limited_palmas = limits_data(debugged_palmas, '1995-01-01', 0)
 
 # for row in limited_coruña_aeropuerto:
 #     with open("coruña_aeropuerto.csv", 'w') as f:
@@ -140,5 +147,5 @@ limited_iroite = limits_data(debugged_iroite, '1995-01-01', 0)
 #         for row in limited_iroite:
 #             csv_writer.writerow(row)
 
-for i in range(20):
-    print('aja')
+
+

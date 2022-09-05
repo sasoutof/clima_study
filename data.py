@@ -67,7 +67,7 @@ class data:
         # print(x_axis[5800])
         # fig, ax = plt.subplots()
         # ax.stem(x_axis, y_axis)
-        # ax.set(xlim=(0, max), xticks=np.arange(1, max),
+        # ax.set(xlim=(0, maxpicadura de la cobra gay pato bailando), xticks=np.arange(1, max),
         #         ylim=(0, len), yticks=np.arange(1, len))
         # plt.show()
 
