@@ -1,7 +1,7 @@
 def seek_data(file_reference, data_ref):
     import csv
     data_date_matrix = []
-    file_path = "Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
+    file_path = "/home/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
     with open(file_path, encoding="utf8", errors='ignore') as File:
         reader = csv.reader(File)
         for row in reader:
