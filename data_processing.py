@@ -1,13 +1,13 @@
 def seek_data(file_reference, data_ref):
     import csv
     data_date_matrix = []
-    file_path = "/home/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
+    file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
     with open(file_path, encoding="utf8", errors='ignore') as File:
         reader = csv.reader(File)
         for row in reader:
             data_date_matrix.append([row[0], row[data_ref]])
     return data_date_matrix
-def limits_data(data, upper_date, lower_date):
+def limits_data(data, upper_date):
     # recorre el array de datos en busca de la fecha que coincida con la seleccionada
     #y almacena el índice de la misma.
     for row in data:
@@ -47,17 +47,36 @@ def set_up_date(data):
                 date[index][1] = xdata
     debugged_data = date
     return debugged_data
-#
-# import csv
+def covariance_processing(station1_code, station2_code, date, measure = 5):
+    data_station_1 = seek_data(station1_code, measure)
+    data_station_2 = seek_data(station2_code, measure)
+    debugged_data_station_1 = set_up_date(data_station_1)
+    debugged_data_station_2 = set_up_date(data_station_2)
+    limited_data_station_1 = limits_data(debugged_data_station_1, date)
+    limited_data_station_2 = limits_data(debugged_data_station_2, date)
+    data_array = []
+    for i in range(len(limited_data_station_1)):
+        if limited_data_station_1[i][1] != '' and limited_data_station_2[i][1] != '':
+            data_array.append([limited_data_station_1[i][0], limited_data_station_1[i][1], limited_data_station_2[i][1]])
+    return data_array
+
+import csv
+covariance_data = covariance_processing('1428', '1475X', '1995-01-01', 5)
+
+for row in covariance_data:
+    with open("datos_covarianza.csv", 'w') as f:
+        csv_writer = csv.writer(f, delimiter =',')
+        for row in covariance_data:
+            csv_writer.writerow(row)
+
 # #----------------------------------------------A Coruña aeropuerto--------------------------------------------------
 # coruña_aeropuerto = seek_data('1387E', 5)
 # debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
 # limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1995-01-01', 0)
 # #----------------------------------------------A Coruña--------------------------------------------------
-coruña = seek_data('1387', 5)
-debugged_coruña = set_up_date(coruña)
-limited_debugged_coruña = limits_data(debugged_coruña, '1995-01-01', 0)
-print(debugged_coruña)
+# coruña = seek_data('1387', 5)
+# debugged_coruña = set_up_date(coruña)
+# limited_debugged_coruña = limits_data(debugged_coruña, '1995-01-01', 0)
 # # ----------------------------------------------Cabo Vilan--------------------------------------------------
 # cabo_vilan = seek_data('1393', 5)
 # debugged_cabo_vilan = set_up_date(cabo_vilan)
@@ -87,12 +106,12 @@ print(debugged_coruña)
 # debugged_iroite = set_up_date(iroite)
 # limited_iroite = limits_data(debugged_iroite, '1995-01-01', 0)
 #
-# # for row in limited_coruña_aeropuerto:
-# #     with open("coruña_aeropuerto.csv", 'w') as f:
-# #         csv_writer = csv.writer(f, delimiter =',')
-# #         for row in limited_coruña_aeropuerto:
-# #             csv_writer.writerow(row)
-# #
+# for row in limited_coruña_aeropuerto:
+#     with open("coruña_aeropuerto.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter =',')
+#         for row in limited_coruña_aeropuerto:
+#             csv_writer.writerow(row)
+#
 # # for row in limited_debugged_coruña:
 # #     with open("coruña.csv", 'w') as f:
 # #         csv_writer = csv.writer(f, delimiter =',')
