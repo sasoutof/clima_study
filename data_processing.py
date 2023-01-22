@@ -47,6 +47,31 @@ def set_up_date(data):
                 date[index][1] = xdata
     debugged_data = date
     return debugged_data
+
+def fill_data_gaps(station_code, date, station, measure = 5):
+    import csv
+    # En esta funcion rellenamos los datos vacios con datos de otra estacion
+    data_station = seek_data(station_code, measure)
+    debugged_data_station = set_up_date(data_station)
+    limited_data_station = limits_data(debugged_data_station, date)
+    file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/para estudio" + '/' + station + ".csv"
+    # En primer lugar lugar cambiamos las celdas con '0' por ''
+    for data in limited_data_station:
+        if data[1] == '0':
+            limited_data_station[limited_data_station.index(data)][1] = ''
+    # Rellena las celdas vacias con datos de otras estaciones
+    for data in limited_data_station:
+        if data[1] == '':
+            date_to_seek = data[0]
+            with open(file_path, newline = '', encoding = 'utf-8') as csvfile:
+                reader = csv.reader(csvfile, delimiter = ',', quotechar = '|')
+                for row in reader:
+                    if date_to_seek == row[0]:
+                        data_to_gap = row[1]
+            index = limited_data_station.index(data)
+            limited_data_station[index][1] = data_to_gap
+    return limited_data_station
+
 def covariance_processing(station1_code, station2_code, date, measure = 5):
     # Esta función prerara los datos para poder calcular la covarianza entre 2 estaciones
     data_station_1 = seek_data(station1_code, measure)
@@ -61,7 +86,7 @@ def covariance_processing(station1_code, station2_code, date, measure = 5):
             data_array.append([limited_data_station_1[i][0], limited_data_station_1[i][1], limited_data_station_2[i][1]])
     return data_array
 
-# import csv
+import csv
 # covariance_data = covariance_processing('1475X', '1428', '1995-01-01', 5)
 
 # for row in covariance_data:
@@ -70,12 +95,13 @@ def covariance_processing(station1_code, station2_code, date, measure = 5):
 #         for row in covariance_data:
 #             csv_writer.writerow(row)
 
-# #----------------------------------------------A Coruña aeropuerto--------------------------------------------------
-# coruña_aeropuerto = seek_data('1387E', 5)
-# debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
-# limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1995-01-01')
+#----------------------------------------------A Coruña aeropuerto--------------------------------------------------
+coruña_aeropuerto = seek_data('1387E', 5)
+debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
+limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1975-01-01')
+final_data_coruna_aeropuerto = fill_data_gaps('1387E', '1975-01-01', 'coruña')
 
-# #----------------------------------------------Santiago De Compostela airport--------------------------------------------------
+#----------------------------------------------Santiago De Compostela airport--------------------------------------------------
 # sdc_airport = seek_data('1428', 5)
 # debugged_sdc_airport = set_up_date(sdc_airport)
 # limited_sdc_airport = limits_data(debugged_sdc_airport, '1995-01-01')
@@ -84,18 +110,17 @@ def covariance_processing(station1_code, station2_code, date, measure = 5):
 # pontevedra = seek_data('1484', 5)
 # debugged_pontevedra = set_up_date(pontevedra)
 # limited_pontevedra = limits_data(debugged_pontevedra, '1995-01-01')
-
-# for row in limited_coruña_aeropuerto:
+#
+# for row in final_data_coruna_aeropuerto:
 #     with open("coruña_aeropuerto.csv", 'w') as f:
 #         csv_writer = csv.writer(f, delimiter =',')
 #         for row in limited_coruña_aeropuerto:
 #             csv_writer.writerow(row)
 #
-for row in limited_sdc_airport:
-    with open("sdc_airport.csv", 'w') as f:
-        csv_writer = csv.writer(f, delimiter=',')
-        for row in limited_sdc_airport:
-            csv_writer.writerow(row)
-
+# for row in limited_sdc_airport:
+#     with open("sdc_airport.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter=',')
+#         for row in limited_sdc_airport:
+#             csv_writer.writerow(row)
 
 # ATBB9JNXgQ9erPTWEyLNVhnJ8YNm4217D133
