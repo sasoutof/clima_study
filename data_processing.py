@@ -1,4 +1,6 @@
 def seek_data(file_reference, data_ref):
+    #esta función se encarga de localizar el archivo solicitado y guardar un array
+    #con los datos indicados en 'data_ref'
     import csv
     data_date_matrix = []
     file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
@@ -48,13 +50,13 @@ def set_up_date(data):
     debugged_data = date
     return debugged_data
 
-def fill_data_gaps(station_code, date, station, measure = 5):
+def fill_data_gaps(station_code, station_2_code, date, measure = 5):
     import csv
     # En esta funcion rellenamos los datos vacios con datos de otra estacion
     data_station = seek_data(station_code, measure)
     debugged_data_station = set_up_date(data_station)
     limited_data_station = limits_data(debugged_data_station, date)
-    file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/para estudio" + '/' + station + ".csv"
+    file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + '/' + station_2_code + ".csv"
     # En primer lugar lugar cambiamos las celdas con '0' por ''
     for data in limited_data_station:
         if data[1] == '0':
@@ -96,10 +98,10 @@ import csv
 #             csv_writer.writerow(row)
 
 #----------------------------------------------A Coruña aeropuerto--------------------------------------------------
-coruña_aeropuerto = seek_data('1387E', 5)
-debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
-limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1975-01-01')
-final_data_coruna_aeropuerto = fill_data_gaps('1387E', '1975-01-01', 'coruña')
+# coruña_aeropuerto = seek_data('1387E', 5)
+# debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
+# limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1975-01-01')
+final_data_coruna_aeropuerto = fill_data_gaps('1351', '1475X', '1975-01-01')
 
 #----------------------------------------------Santiago De Compostela airport--------------------------------------------------
 # sdc_airport = seek_data('1428', 5)
@@ -114,7 +116,7 @@ final_data_coruna_aeropuerto = fill_data_gaps('1387E', '1975-01-01', 'coruña')
 # for row in final_data_coruna_aeropuerto:
 #     with open("coruña_aeropuerto.csv", 'w') as f:
 #         csv_writer = csv.writer(f, delimiter =',')
-#         for row in limited_coruña_aeropuerto:
+#         for row in final_data_coruna_aeropuerto:
 #             csv_writer.writerow(row)
 #
 # for row in limited_sdc_airport:
@@ -123,4 +125,5 @@ final_data_coruna_aeropuerto = fill_data_gaps('1387E', '1975-01-01', 'coruña')
 #         for row in limited_sdc_airport:
 #             csv_writer.writerow(row)
 
-# ATBB9JNXgQ9erPTWEyLNVhnJ8YNm4217D133
+# Oetn4SoF9yfiZ0n5aBBg
+
