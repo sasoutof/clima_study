@@ -9,20 +9,35 @@ def seek_data(file_reference, data_ref):
         for row in reader:
             data_date_matrix.append([row[0], row[data_ref]])
     return data_date_matrix
-def limits_data(data, upper_date):
-    # recorre el array de datos en busca de la fecha que coincida con la seleccionada
-    #y almacena el índice de la misma.
+
+def limits_data(data, upper_date, lower_date):
+    #recorre el array de datos en busca de la fecha que coincida con la seleccionada y almacena el índice de la misma.
+    #en este bucle recorre todo el array de datos y localiza el indice de la fecha indicada
+    #para posteriormente eliminar todos los registros anteriores a ese indice
     for row in data:
         date = row[0]
         index = data.index(row)
         if date == upper_date:
-            index_del = index
-    #elimina todos los registros anteriores al indice de la fecha coincidente.
-    for i in range(index_del):
+            upper_index_del = index
+    # #elimina todos los registros anteriores al indice de la fecha coincidente.
+    for i in range(upper_index_del):
         del data[0]
-    limited_data = data
+    #se hace el mismo procedimiento que en el caso anterior pero para localizar el indice de la fecha inferior
+    #con el nuevo array en el cual ya se han eliminado las fechas anteriores.
+    for row in data:
+        date = row[0]
+        index = data.index(row)
+        if date == lower_date:
+            lower_index_del = index
+    limited_data = []
+    #cogemos los datos que nos interesan y los guardamos ene l array definitivo
+    for i in range(0, lower_index_del + 1):
+        limited_data.append(data[i])
     return limited_data
+
 def set_up_date(data):
+    # los arrays que cogemos de las bbdd muchas veces vienen sin alguna fecha
+    # esta función rellena esas fechas que faltan y como valor para esa fecha pone cero
     import pandas as pd
     data_len = len(data) - 1
     initial_date = data[1][0]
@@ -101,12 +116,13 @@ import csv
 # coruña_aeropuerto = seek_data('1387E', 5)
 # debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
 # limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1975-01-01')
-final_data_coruna_aeropuerto = fill_data_gaps('1351', '1475X', '1975-01-01')
+# final_data_coruna_aeropuerto = fill_data_gaps('1351', '1475X', '1975-01-01')
 
 #----------------------------------------------Santiago De Compostela airport--------------------------------------------------
 # sdc_airport = seek_data('1428', 5)
 # debugged_sdc_airport = set_up_date(sdc_airport)
 # limited_sdc_airport = limits_data(debugged_sdc_airport, '1995-01-01')
+# final_data_santiago_aeropuerto = fill_data_gaps('1351', '1475X', '1975-01-01')
 
 # #----------------------------------------------Pontevedra (Instituto)--------------------------------------------------
 # pontevedra = seek_data('1484', 5)
