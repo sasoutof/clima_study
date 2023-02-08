@@ -1,27 +1,43 @@
 def seek_data(file_reference, data_ref):
+    #esta función se encarga de localizar el archivo solicitado y guardar un array
+    #con los datos indicados en 'data_ref'
     import csv
     data_date_matrix = []
     file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + file_reference + ".csv"
-
     with open(file_path, encoding="utf8", errors='ignore') as File:
         reader = csv.reader(File)
         for row in reader:
             data_date_matrix.append([row[0], row[data_ref]])
     return data_date_matrix
+
 def limits_data(data, upper_date, lower_date):
-    # recorre el array de datos en busca de la fecha que coincida con la seleccionada
-    #y almacena el índice de la misma.
+    #recorre el array de datos en busca de la fecha que coincida con la seleccionada y almacena el índice de la misma.
+    #en este bucle recorre todo el array de datos y localiza el indice de la fecha indicada
+    #para posteriormente eliminar todos los registros anteriores a ese indice
     for row in data:
         date = row[0]
         index = data.index(row)
         if date == upper_date:
-            index_del = index
-    #elimina todos los registros anteriores al indice de la fecha coincidente.
-    for i in range(index_del):
+            upper_index_del = index
+    # #elimina todos los registros anteriores al indice de la fecha coincidente.
+    for i in range(upper_index_del):
         del data[0]
-    limited_data = data
+    #se hace el mismo procedimiento que en el caso anterior pero para localizar el indice de la fecha inferior
+    #con el nuevo array en el cual ya se han eliminado las fechas anteriores.
+    for row in data:
+        date = row[0]
+        index = data.index(row)
+        if date == lower_date:
+            lower_index_del = index
+    limited_data = []
+    #cogemos los datos que nos interesan y los guardamos enn el array definitivo
+    for i in range(0, lower_index_del + 1):
+        limited_data.append(data[i])
     return limited_data
+
 def set_up_date(data):
+    # los arrays que cogemos de las bbdd muchas veces vienen sin alguna fecha
+    # esta función rellena esas fechas que faltan y como valor para esa fecha pone cero
     import pandas as pd
     data_len = len(data) - 1
     initial_date = data[1][0]
@@ -49,103 +65,156 @@ def set_up_date(data):
     debugged_data = date
     return debugged_data
 
-# def correlation_analysis():
+def fill_data_gaps(data, station_code):
+    import csv
+    # En esta funcion rellenamos los datos vacios con datos de otra estacion
+    # data_station = seek_data(station_code, measure)
+    # debugged_data_station = set_up_date(data_station)
+    # limited_data_station = limits_data(debugged_data_station, date)
+    limited_data_station = data
+    file_path = "/home/santiago/Documentos/CLIMATOLOGIA/ESTUDIO CLIMATICO/DATOS PROCESADOS/GALICIA/" + '/' + station_code + ".csv"
+    # En primer lugar lugar cambiamos las celdas con '0' por ''
+    for data in limited_data_station:
+        if data[1] == '0':
+            limited_data_station[limited_data_station.index(data)][1] = ''
+    # Rellena las celdas vacias con datos de otras estaciones
+    for data in limited_data_station:
+        if data[1] == '':
+            date_to_seek = data[0]
+            with open(file_path, newline = '', encoding = 'utf-8') as csvfile:
+                reader = csv.reader(csvfile, delimiter = ',', quotechar = '|')
+                for row in reader:
+                    if date_to_seek == row[0]:
+                        data_to_gap = row[1]
+            index = limited_data_station.index(data)
+            limited_data_station[index][1] = data_to_gap
+    return limited_data_station
+def data_write(data, name = "data_station"):
+    for row in data:
+        with open(name + ".csv", 'w') as f:
+            csv_writer = csv.writer(f, delimiter =',')
+            for row in data:
+                csv_writer.writerow(row)
+def covariance_processing(station1_code, station2_code, upper_date, lower_date, measure = 5):
+    # Esta función prerara los datos para poder calcular la covarianza entre 2 estaciones
+    data_station_1 = seek_data(station1_code, measure)
+    data_station_2 = seek_data(station2_code, measure)
+    debugged_data_station_1 = set_up_date(data_station_1)
+    debugged_data_station_2 = set_up_date(data_station_2)
+    limited_data_station_1 = limits_data(debugged_data_station_1, upper_date, lower_date)
+    limited_data_station_2 = limits_data(debugged_data_station_2, upper_date, lower_date)
+    data_array = []
+    for i in range(len(limited_data_station_1)):
+        if limited_data_station_1[i][1] != '' and limited_data_station_2[i][1] != '':
+            data_array.append([limited_data_station_1[i][0], limited_data_station_1[i][1], limited_data_station_2[i][1]])
+    return data_array
+
+def covariance_write(data, name = "covarianza"):
+    for row in data:
+        with open(name + ".csv", 'w') as f:
+            csv_writer = csv.writer(f, delimiter =',')
+            for row in data:
+                csv_writer.writerow(row)
 
 import csv
-# # #----------------------------------------------A Coruña aeropuerto--------------------------------------------------
+
+#----------------------------------------------A Coruña aeropuerto--------------------------------------------------
 # coruña_aeropuerto = seek_data('1387E', 5)
 # debugged_coruña_aeropuerto = set_up_date(coruña_aeropuerto)
-# limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1995-01-01', 0)
-# #----------------------------------------------A Coruña--------------------------------------------------
-# coruña = seek_data('1387', 5)
-# debugged_coruña = set_up_date(coruña)
-# limited_debugged_coruña = limits_data(debugged_coruña, '1995-01-01', 0)
-# # ----------------------------------------------Cabo Vilan--------------------------------------------------
-# cabo_vilan = seek_data('1393', 5)
-# debugged_cabo_vilan = set_up_date(cabo_vilan)
-# limited_cabo_vilan = limits_data(debugged_cabo_vilan, '1995-01-01', 0)
-# # ----------------------------------------------Estaca de Vares--------------------------------------------------
-# estaca_vares = seek_data('1351', 5)
-# debugged_estaca_vares = set_up_date(estaca_vares)
-# limited_estaca_vares = limits_data(debugged_estaca_vares, '1995-01-01', 0)
-# # ----------------------------------------------Fisterra--------------------------------------------------
-# fisterra = seek_data('1400', 5)
-# debugged_fisterra = set_up_date(fisterra)
-# limited_fisterra = limits_data(debugged_fisterra, '1995-01-01', 0)
-# # ----------------------------------------------Santiago De Compostela--------------------------------------------------
-# sdc = seek_data('1428', 5)
-# debugged_sdc = set_up_date(sdc)
-# limited_sdc = limits_data(debugged_sdc, '1995-01-01', 0)
-# #----------------------------------------------Santiago De Compostela airport--------------------------------------------------
-# sdc_airport = seek_data('1475X', 5)
-# debugged_sdc_airport = set_up_date(sdc_airport)
-# limited_sdc_airport = limits_data(debugged_sdc_airport, '1995-01-01', 0)
-# #----------------------------------------------Padron--------------------------------------------------
-# padron = seek_data('1473A', 5)
-# debugged_padron = set_up_date(padron)
-# limited_padron = limits_data(debugged_padron, '1995-01-01', 0)
-# #----------------------------------------------Iroite--------------------------------------------------
-# iroite = seek_data('1437O', 5)
-# debugged_iroite = set_up_date(iroite)
-# limited_iroite = limits_data(debugged_iroite, '1995-01-01', 0)
-# #----------------------------------------------CHINCHILLA--------------------------------------------------
-palmas = seek_data('C229J', 5)
-debugged_palmas = set_up_date(palmas)
-limited_palmas = limits_data(debugged_palmas, '1995-01-01', 0)
+# limited_coruña_aeropuerto = limits_data(debugged_coruña_aeropuerto, '1973-01-01', '2004-01-01')
+# # final_data_coruna_aeropuerto = fill_data_gaps('1351', '1475X', '1975-01-01')
+
+#----------------------------------------------Santiago De Compostela aeropuerto--------------------------------------------------
+# sdc_airport = seek_data('1428', 5)
+# debugged_sdc_aiport_data = set_up_date(sdc_airport)
+# limited_sdc_airport_data = limits_data(debugged_sdc_aiport_data, '1973-01-01', '2004-01-01')
+# Este aeropuerto no tiene huecos así que esta función da fallo
+# final_sdc_airport_data = fill_data_gaps(limited_sdc_airport_data, '1387')
+# print(limited_sdc_airport_data)
+
+#----------------------------------------------Pontevedra--------------------------------------------------
+# pontevedra = seek_data('1484C', 5)
+# debugged_pontevedra = set_up_date(pontevedra)
+# limited_data_pontevedra = limits_data(debugged_pontevedra, '1986-01-01', '2004-01-01')
+# final_data_pontevedra = fill_data_gaps(limited_data_pontevedra, '1484')
+
+# #----------------------------------------------Vigo_aeropuerto --------------------------------------------------
+# vigo = seek_data('1495', 5)
+# debugged_vigo = set_up_date(vigo)
+# limited_data_vigo = limits_data(debugged_vigo, '1973-01-01', '2004-01-01')
+# final_data_vigo = fill_data_gaps(limited_data_vigo, '1495')
+#
+# # ----------------------------------------------Lugo_airport--------------------------------------------------
+# lugo_airport = seek_data('1505', 5)
+# debugged_lugo_airport = set_up_date(lugo_airport)
+# limited_data_lugo_airport = limits_data(debugged_lugo_airport, '1973-01-01', '2004-01-01')
+# # final_data_lugo_airport= fill_data_gaps(limited_data_lugo_airport, '1495')
+
+#----------------------------------------------Ourense--------------------------------------------------
+# ourense = seek_data('1690A', 5)
+# debugged_ourense = set_up_date(ourense)
+# limited_data_ourense = limits_data(debugged_ourense, '1973-01-01', '2004-01-01')
+# # final_data_lugo_airport= fill_data_gaps(limited_data_lugo_airport, '1495')
+
+#----------------------------------------------Pobra de Trives--------------------------------------------------
+# proba_trives = seek_data('1631E', 5)
+# debugged_trives = set_up_date(proba_trives)
+# limited_data_trives = limits_data(debugged_trives, '1982-09-01', '1983-03-04')
+# # final_data_lugo_airport= fill_data_gaps(limited_data_lugo_airport, '1495')
+
+#----------------------------------------------Ponferrada--------------------------------------------------
+# ponferrada = seek_data('1549', 5)
+# debugged_ponferrada = set_up_date(ponferrada)
+# limited_data_ponferrada = limits_data(debugged_ponferrada, '1992-01-02', '2003-12-31')
+# final_data_ponferrada_airport= fill_data_gaps(limited_data_ponferrada, '1549')
 
 # for row in limited_coruña_aeropuerto:
 #     with open("coruña_aeropuerto.csv", 'w') as f:
 #         csv_writer = csv.writer(f, delimiter =',')
 #         for row in limited_coruña_aeropuerto:
 #             csv_writer.writerow(row)
-# 
-# for row in limited_debugged_coruña:
-#     with open("coruña.csv", 'w') as f:
-#         csv_writer = csv.writer(f, delimiter =',')
-#         for row in limited_debugged_coruña:
-#             csv_writer.writerow(row)
 #
-# for row in limited_cabo_vilan:
-#     with open("cabo_vilan.csv", 'w') as f:
-#         csv_writer = csv.writer(f, delimiter =',')
-#         for row in limited_cabo_vilan:
-#             csv_writer.writerow(row)
-#
-# for row in limited_estaca_vares:
-#     with open("esta_vares.csv", 'w') as f:
-#         csv_writer = csv.writer(f, delimiter =',')
-#         for row in limited_estaca_vares:
-#             csv_writer.writerow(row)
-#
-# for row in limited_fisterra:
-#     with open("fisterra.csv", 'w') as f:
-#         csv_writer = csv.writer(f, delimiter =',')
-#         for row in limited_fisterra:
-#             csv_writer.writerow(row)
-#
-# for row in limited_sdc:
-#     with open("sdc.csv", 'w') as f:
-#         csv_writer = csv.writer(f, delimiter =',')
-#         for row in limited_sdc:
-#             csv_writer.writerow(row)
-#
-# for row in limited_sdc_airport:
-#     with open("sdc_airport.csv", 'w') as f:
+# for row in limited_sdc_airport_data:
+#     with open("sdc_airport_data.csv", 'w') as f:
 #         csv_writer = csv.writer(f, delimiter=',')
-#         for row in limited_sdc_airport:
+#         for row in limited_sdc_airport_data:
 #             csv_writer.writerow(row)
 #
-# for row in limited_padron:
-#     with open("padron.csv", 'w') as f:
+# for row in final_data_pontevedra:
+#     with open("pontevedra_data.csv", 'w') as f:
 #         csv_writer = csv.writer(f, delimiter=',')
-#         for row in limited_padron:
-#             csv_writer.writerow(row)
-#
-# for row in limited_iroite:
-#     with open("iroite.csv", 'w') as f:
-#         csv_writer = csv.writer(f, delimiter=',')
-#         for row in limited_iroite:
+#         for row in final_data_pontevedra:
 #             csv_writer.writerow(row)
 
+# for row in limited_data_vigo:
+#     with open("vigo_data.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter=',')
+#         for row in limited_data_vigo:
+#             csv_writer.writerow(row)
+# #
+# for row in limited_data_lugo_airport:
+#     with open("lugo_data.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter=',')
+#         for row in limited_data_lugo_airport:
+#             csv_writer.writerow(row)
+#
+# for row in limited_data_ourense:
+#     with open("ourense_data.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter=',')
+#         for row in limited_data_ourense:
+#             csv_writer.writerow(row)
+#
+# for row in limited_data_ponferrada:
+#     with open("ponferrada_data.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter=',')
+#         for row in limited_data_ponferrada:
+#             csv_writer.writerow(row)
+# #
+# for row in limited_data_trives:
+#     with open("limited_data_trives.csv", 'w') as f:
+#         csv_writer = csv.writer(f, delimiter=',')
+#         for row in limited_data_trives:
+#             csv_writer.writerow(row)
+# Oetn4SoF9yfiZ0n5aBBg
 
 
